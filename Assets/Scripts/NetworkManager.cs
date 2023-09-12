@@ -10,20 +10,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     //singelton 
     public static NetworkManager instance;
-    public float count;
 
     private void Awake()
     {
-        count = 0;
         if (instance != null && instance != this)
         {
-            count += 1;
             gameObject.SetActive(false);
         }
         else
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -58,7 +55,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChangeScene(string sceneName)
     {
-        count = 99;
         PhotonNetwork.LoadLevel(sceneName);
     }
 

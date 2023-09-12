@@ -28,25 +28,25 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: asia
+  DevRegion: 
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - ChangeScene
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
-  - RespawnSpaceship
-  - UpdateLobbyUI
-  - ChangeScene
-  - ImInGame
+  - FlashDamage
   - FlipLeft
   - FlipRight
-  - FlashDamage
+  - ImInGame
   - Initialized
+  - RespawnSpaceship
   - TakeDamage
+  - UpdateLobbyUI
   DisableAutoOpenWizard: 1
   ShowSettings: 0
-  DevRegionSetOnce: 1
+  DevRegionSetOnce: 0

@@ -4670,7 +4670,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5623595587520220445, guid: d582ca766e44975499b79243a677c602, type: 3}
       propertyPath: maxPlayers
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5623595587520220446, guid: d582ca766e44975499b79243a677c602, type: 3}
       propertyPath: m_Name
@@ -4678,6 +4678,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d582ca766e44975499b79243a677c602, type: 3}
+--- !u!1 &1699041510 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5623595587520220446, guid: d582ca766e44975499b79243a677c602, type: 3}
+  m_PrefabInstance: {fileID: 1699041509}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1699041511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699041510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1719271042
 GameObject:
   m_ObjectHideFlags: 0
@@ -4974,7 +5001,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 1
+  sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!4 &1840854146
