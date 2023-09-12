@@ -26,9 +26,13 @@ public class PlayerController : MonoBehaviourPun
     public int currentHP;
     public int maxHP;
     public bool dead;
-
-
+    //instance
     public static PlayerController instance;
+
+    public HeaderInfomation headerInfo;
+
+
+
 
 
     [PunRPC]
@@ -37,6 +41,15 @@ public class PlayerController : MonoBehaviourPun
         id = player.ActorNumber;
         photonPlayer = player;
         GameManager.instance.players[id - 1] = this;
+        headerInfo.Initialized(player.NickName, maxHP);
+        GameUI.instance.UpdateHpText(currentHP, maxHP);
+
+        if (PlayerPrefs.HasKey("Gold"))
+        {
+            gold = PlayerPrefs.GetInt("Gold");
+        }
+        GameUI.instance.UpdateGoldText(gold);
+
         if (player.IsLocal)
         {
             instance = this;
@@ -130,7 +143,7 @@ public class PlayerController : MonoBehaviourPun
     public void TakeDamage(int damageAmount)
     {
         currentHP -= damageAmount;
-
+        headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, currentHP);
         if (currentHP <= 0)
         {
             //die
@@ -140,6 +153,9 @@ public class PlayerController : MonoBehaviourPun
         {
             photonView.RPC("FlashDamage", RpcTarget.All);
         }
+
+        GameUI.instance.UpdateHpText(currentHP, maxHP);
+
     }
 
     [PunRPC]
@@ -176,5 +192,23 @@ public class PlayerController : MonoBehaviourPun
 
         //Update Health UI
     }
+
+    [PunRPC]
+    void Heal(int amountToHeal)
+    {
+        currentHP = Mathf.Clamp(currentHP + amountToHeal, 0, maxHP);
+        headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, currentHP);
+        GameUI.instance.UpdateHpText(currentHP, maxHP);
+    }
+
+    [PunRPC]
+    void GetGold(int goldToGive)
+    {
+        gold += goldToGive;
+        PlayerPrefs.SetInt("Gold", gold);
+        GameUI.instance.UpdateGoldText(gold);
+    }
+
+
 
 }
