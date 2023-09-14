@@ -7,7 +7,9 @@ using Photon.Realtime;
 
 public class PlayerController : MonoBehaviourPun
 {
-    public Transform attackPoint;
+    public bool faceRight;
+    public Transform attackPointRight;
+    public Transform attackPointLeft;
     public int damage;
     public float attackRange;
     public float attackDelay;
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviourPun
             gold = PlayerPrefs.GetInt("Gold");
         }
         GameUI.instance.UpdateGoldText(gold);
-
+        currentHP = maxHP;
         if (player.IsLocal)
         {
             instance = this;
@@ -116,27 +118,46 @@ public class PlayerController : MonoBehaviourPun
         //reset attack delay time
         lastAttackTime = Time.time;
         //rend raycast in front of player
-        RaycastHit2D hit = Physics2D.Raycast(attackPoint.position, transform.forward, attackRange);
-        playerAnim.SetTrigger("Attack");
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("Enemy"))
+        if (faceRight)
         {
-            Enemy enemy = hit.collider.GetComponent<Enemy>();
-            // do damage to enemy
+            RaycastHit2D hit = Physics2D.Raycast(attackPointRight.position, transform.forward, attackRange);
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                Enemy enemy = hit.collider.GetComponent<Enemy>();
+                // do damage to enemy
+                enemy.photonView.RPC("TakeDamage", RpcTarget.MasterClient, damage);
 
-            
+            }
         }
+        else
+        {
+            RaycastHit2D hit = Physics2D.Raycast(attackPointLeft.position, transform.forward, attackRange);
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("Enemy"))
+            {
+                Enemy enemy = hit.collider.GetComponent<Enemy>();
+                // do damage to enemy
+                enemy.photonView.RPC("TakeDamage", RpcTarget.MasterClient, damage);
+
+            }
+        }
+        
+        
+        
+        playerAnim.SetTrigger("Attack");
     }
 
     [PunRPC]
     void FlipRight()
     {
         spriteRender.flipX = false;
+        faceRight = true;
     }
 
     [PunRPC]
     void FlipLeft()
     {
         spriteRender.flipX = true;
+        faceRight = false;
     }
 
     [PunRPC]
@@ -144,6 +165,7 @@ public class PlayerController : MonoBehaviourPun
     {
         currentHP -= damageAmount;
         headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, currentHP);
+        GameUI.instance.UpdateHpText(currentHP, maxHP);
         if (currentHP <= 0)
         {
             //die
@@ -153,9 +175,6 @@ public class PlayerController : MonoBehaviourPun
         {
             photonView.RPC("FlashDamage", RpcTarget.All);
         }
-
-        GameUI.instance.UpdateHpText(currentHP, maxHP);
-
     }
 
     [PunRPC]
@@ -191,6 +210,8 @@ public class PlayerController : MonoBehaviourPun
         rb2d.isKinematic = false;
 
         //Update Health UI
+        headerInfo.photonView.RPC("UpdateHealthBar", RpcTarget.All, currentHP);
+        GameUI.instance.UpdateHpText(currentHP, maxHP);
     }
 
     [PunRPC]
